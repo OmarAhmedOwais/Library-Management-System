@@ -1,0 +1,42 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "import", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    // "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    // I added the following line to specify the path to your tsconfig.json file
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    // Add any additional rules or overrides here
+    // "@typescript-eslint/no-unsafe-assignment": "warn", // enable the rule that forbids unsafe assignment of an any type value
+    // "@typescript-eslint/no-unsafe-call": "warn", // enable the rule that forbids unsafe calls to an any type value
+    // I added the following rules as examples of how you can customize your configuration
+    "@typescript-eslint/no-explicit-any": "off", // disable the rule that forbids using the any type
+    "@typescript-eslint/explicit-module-boundary-types": [
+      "warn",
+      { "allowArgumentsExplicitlyTypedAsAny": true }
+    ], // enable the rule that requires explicit return types for functions and methods, but allow arguments to be typed as any
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ], // enable the rule that detects unused variables, but ignore arguments that start with an underscore
+    //"indent": ["error", 2], // enable the rule that enforces consistent indentation of 2 spaces
+    //"quotes": ["error", "single"], // enable the rule that enforces the use of single quotes for strings
+    "semi": ["error", "always"] ,// enable the rule that enforces the use of semicolons at the end of statements
+    "linebreak-style": ["warn", "unix"],
+    "no-unused-expressions": "error",
+     //"no-console": "warn",
+    "import/order": ["error", { "newlines-between": "always" }]
+  }
+}
