@@ -5,7 +5,7 @@ To set up and run the application, follow these steps:
 1. **Clone the repository from GitHub:**
 
    ```
-   git clone <repository_url>
+   git clone https://github.com/OmarAhmedOwais/Library-Management-System.git
    ```
 
 2. **Navigate to the project directory:**
