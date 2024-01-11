@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
-import { MessageType } from '@/types/enums';
-import { ApiResponse, prisma } from '@/utils';
 import expressAsyncHandler from 'express-async-handler';
-import { NotFoundError } from '@/error';
 import { StatusCodes } from 'http-status-codes';
 import * as excel from 'exceljs';
+
+import { MessageType } from '@/types/enums';
+import { ApiResponse, prisma } from '@/utils';
+import { NotFoundError } from '@/error';
+
 /**
  * @desc    Checkout Book
  * @route   Post /api/v1/borrowing/checkOut
@@ -13,7 +15,7 @@ import * as excel from 'exceljs';
 export const checkOutBook = expressAsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { id } = req.user!;
-    const { bookId} = req.body;
+    const { bookId } = req.body;
     const book = await prisma.book.findUnique({
       where: {
         id: parseInt(bookId),
@@ -94,8 +96,8 @@ export const returnBook = expressAsyncHandler(
       where: {
         userId_bookId: {
           userId: id,
-          bookId: parseInt(bookId)
-        }
+          bookId: parseInt(bookId),
+        },
       },
       data: {
         returnedDate: new Date(),
@@ -111,7 +113,10 @@ export const returnBook = expressAsyncHandler(
     });
     const response = new ApiResponse({
       messages: [
-        { message: 'Book returned out successfully', type: MessageType.SUCCESS },
+        {
+          message: 'Book returned out successfully',
+          type: MessageType.SUCCESS,
+        },
       ],
       data: bookReturned,
     });
@@ -138,12 +143,18 @@ export const getBorrowingByUserId = expressAsyncHandler(
     });
     if (!borrowing) {
       throw new NotFoundError([
-        { message: 'Borrowing Data For this User not found', type: MessageType.ERROR },
+        {
+          message: 'Borrowing Data For this User not found',
+          type: MessageType.ERROR,
+        },
       ]);
     }
     const response = new ApiResponse({
       messages: [
-        { message: 'Borrowing Data retrieved successfully', type: MessageType.SUCCESS },
+        {
+          message: 'Borrowing Data retrieved successfully',
+          type: MessageType.SUCCESS,
+        },
       ],
       data: borrowing,
     });
@@ -179,12 +190,18 @@ export const getBorrowingOverDueDatesByUserId = expressAsyncHandler(
     });
     if (!borrowing) {
       throw new NotFoundError([
-        { message: 'Borrowing OverDue Date For this User not found', type: MessageType.ERROR },
+        {
+          message: 'Borrowing OverDue Date For this User not found',
+          type: MessageType.ERROR,
+        },
       ]);
     }
     const response = new ApiResponse({
       messages: [
-        { message: 'Borrowing OverDue Date retrieved successfully', type: MessageType.SUCCESS },
+        {
+          message: 'Borrowing OverDue Date retrieved successfully',
+          type: MessageType.SUCCESS,
+        },
       ],
       data: borrowing,
     });
@@ -193,17 +210,17 @@ export const getBorrowingOverDueDatesByUserId = expressAsyncHandler(
 );
 
 /**
- * @desc    Get All Borrowing overdue 
+ * @desc    Get All Borrowing overdue
  * @route   GET /api/v1/borrowing/overdue
  * @access  Private(admin)
  **/
-export const getAllBorrowingOverDueDates= expressAsyncHandler(
+export const getAllBorrowingOverDueDates = expressAsyncHandler(
   async (_req: Request, res: Response): Promise<void> => {
     const borrowing = await prisma.borrowing.findMany({
       where: {
         returnedDate: {
-          lt: new Date()
-        }
+          lt: new Date(),
+        },
       },
       include: {
         book: true,
@@ -212,17 +229,22 @@ export const getAllBorrowingOverDueDates= expressAsyncHandler(
     });
     if (!borrowing) {
       throw new NotFoundError([
-        { message: 'There is No Borrowing Over Due Date', type: MessageType.ERROR },
+        {
+          message: 'There is No Borrowing Over Due Date',
+          type: MessageType.ERROR,
+        },
       ]);
     }
     const response = new ApiResponse({
       messages: [
-        { message: 'Borrowing Over Due Date retrieved successfully', type: MessageType.SUCCESS },
+        {
+          message: 'Borrowing Over Due Date retrieved successfully',
+          type: MessageType.SUCCESS,
+        },
       ],
       data: borrowing,
     });
     res.status(response.statusCode).json(response);
-    
   },
 );
 
@@ -231,15 +253,15 @@ export const getAllBorrowingOverDueDates= expressAsyncHandler(
  * @route   GET /api/v1/borrowing/inPeriod
  * @access  Private(admin)
  **/
-export const getAllBorrowingInSpecificPeriod= expressAsyncHandler(
+export const getAllBorrowingInSpecificPeriod = expressAsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const {startDate,endDate}=req.body
+    const { startDate, endDate } = req.body;
     const borrowing = await prisma.borrowing.findMany({
       where: {
         borrowedDate: {
           gte: new Date(startDate),
-          lte: new Date(endDate)
-        }
+          lte: new Date(endDate),
+        },
       },
       include: {
         book: true,
@@ -248,18 +270,24 @@ export const getAllBorrowingInSpecificPeriod= expressAsyncHandler(
     });
     if (!borrowing) {
       throw new NotFoundError([
-        { message: 'There is No Borrowing in this Period', type: MessageType.ERROR },
+        {
+          message: 'There is No Borrowing in this Period',
+          type: MessageType.ERROR,
+        },
       ]);
     }
     const response = new ApiResponse({
       messages: [
-        { message: 'Borrowing Data retrieved successfully', type: MessageType.SUCCESS },
+        {
+          message: 'Borrowing Data retrieved successfully',
+          type: MessageType.SUCCESS,
+        },
       ],
       data: borrowing,
     });
     res.status(response.statusCode).json(response);
-  }
-)
+  },
+);
 
 /**
  * @desc    Get All Borrowing In Specific Period XLSX
@@ -284,13 +312,16 @@ export const getAllBorrowingInSpecificPeriodXLSX = expressAsyncHandler(
 
     if (!borrowing || borrowing.length === 0) {
       throw new NotFoundError([
-        { message: 'There is No Borrowing in this Period', type: MessageType.ERROR },
+        {
+          message: 'There is No Borrowing in this Period',
+          type: MessageType.ERROR,
+        },
       ]);
     }
 
     const workbook = new excel.Workbook();
     const worksheet = workbook.addWorksheet('Borrowing Data');
-    
+
     // Add headers to the worksheet
     worksheet.addRow(['Borrowed Date', 'Book Title', 'User Name']);
 
@@ -304,30 +335,35 @@ export const getAllBorrowingInSpecificPeriodXLSX = expressAsyncHandler(
     });
 
     // Set up response headers
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename=BorrowingData.xlsx');
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=BorrowingData.xlsx',
+    );
 
     // Write the workbook to the response
     await workbook.xlsx.write(res);
 
     res.end();
-  }
+  },
 );
-
 
 /**
  * @desc    Get All Borrowing OverDue Dates Of The Last Month
  * @route   GET /api/v1/borrowing/overdueLastMonth
  * @access  Private(admin)
  **/
-export const getAllOverDueBorrowingOfTheLastMonth= expressAsyncHandler(
+export const getAllOverDueBorrowingOfTheLastMonth = expressAsyncHandler(
   async (_req: Request, res: Response): Promise<void> => {
     const borrowing = await prisma.borrowing.findMany({
       where: {
         returnedDate: {
           lt: new Date(),
-          gt: new Date(new Date().setMonth(new Date().getMonth() - 1))
-        }
+          gt: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+        },
       },
       include: {
         book: true,
@@ -336,18 +372,25 @@ export const getAllOverDueBorrowingOfTheLastMonth= expressAsyncHandler(
     });
     if (!borrowing) {
       throw new NotFoundError([
-        { message: 'There is No Borrowing Over Due For The Last Month', type: MessageType.ERROR },
+        {
+          message: 'There is No Borrowing Over Due For The Last Month',
+          type: MessageType.ERROR,
+        },
       ]);
     }
     const response = new ApiResponse({
       messages: [
-        { message: 'Borrowing Data Over Due For The Last Month retrieved successfully', type: MessageType.SUCCESS },
+        {
+          message:
+            'Borrowing Data Over Due For The Last Month retrieved successfully',
+          type: MessageType.SUCCESS,
+        },
       ],
       data: borrowing,
     });
     res.status(response.statusCode).json(response);
-  }
-)
+  },
+);
 
 /**
  * @desc    Get All Borrowing OverDue Dates Of The Last Month
@@ -371,13 +414,16 @@ export const getAllOverDueBorrowingOfTheLastMonthXLSX = expressAsyncHandler(
 
     if (!borrowing || borrowing.length === 0) {
       throw new NotFoundError([
-        { message: 'There is No Borrowing Over Due For The Last Month', type: MessageType.ERROR },
+        {
+          message: 'There is No Borrowing Over Due For The Last Month',
+          type: MessageType.ERROR,
+        },
       ]);
     }
 
     const workbook = new excel.Workbook();
     const worksheet = workbook.addWorksheet('Overdue Borrowing Data');
-    
+
     // Add headers to the worksheet
     worksheet.addRow(['Returned Date', 'Book Title', 'User Name']);
 
@@ -391,14 +437,20 @@ export const getAllOverDueBorrowingOfTheLastMonthXLSX = expressAsyncHandler(
     });
 
     // Set up response headers
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename=OverdueBorrowingData.xlsx');
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=OverdueBorrowingData.xlsx',
+    );
 
     // Write the workbook to the response
     await workbook.xlsx.write(res);
 
     res.end();
-  }
+  },
 );
 
 /**
@@ -406,13 +458,13 @@ export const getAllOverDueBorrowingOfTheLastMonthXLSX = expressAsyncHandler(
  * @route   GET /api/v1/borrowing/LastMonth
  * @access  Private(admin)
  **/
-export const getAllBorrowingInTheLastMonth= expressAsyncHandler(
+export const getAllBorrowingInTheLastMonth = expressAsyncHandler(
   async (_req: Request, res: Response): Promise<void> => {
     const borrowing = await prisma.borrowing.findMany({
       where: {
         borrowedDate: {
-          gt: new Date(new Date().setMonth(new Date().getMonth() - 1))
-        }
+          gt: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+        },
       },
       include: {
         book: true,
@@ -421,17 +473,23 @@ export const getAllBorrowingInTheLastMonth= expressAsyncHandler(
     });
     if (!borrowing) {
       throw new NotFoundError([
-        { message: 'There is No Borrowing In The Last Month', type: MessageType.ERROR },
+        {
+          message: 'There is No Borrowing In The Last Month',
+          type: MessageType.ERROR,
+        },
       ]);
     }
     const response = new ApiResponse({
       messages: [
-        { message: 'Borrowing Data In The Last Month retrieved successfully', type: MessageType.SUCCESS },
+        {
+          message: 'Borrowing Data In The Last Month retrieved successfully',
+          type: MessageType.SUCCESS,
+        },
       ],
       data: borrowing,
     });
     res.status(response.statusCode).json(response);
-  }
+  },
 );
 
 /**
@@ -455,13 +513,16 @@ export const getAllBorrowingInTheLastMonthXLSX = expressAsyncHandler(
 
     if (!borrowing || borrowing.length === 0) {
       throw new NotFoundError([
-        { message: 'There is No Borrowing In The Last Month', type: MessageType.ERROR },
+        {
+          message: 'There is No Borrowing In The Last Month',
+          type: MessageType.ERROR,
+        },
       ]);
     }
 
     const workbook = new excel.Workbook();
     const worksheet = workbook.addWorksheet('Borrowing Data Last Month');
-    
+
     // Add headers to the worksheet
     worksheet.addRow(['Borrowed Date', 'Book Title', 'User Name']);
 
@@ -475,14 +536,20 @@ export const getAllBorrowingInTheLastMonthXLSX = expressAsyncHandler(
     });
 
     // Set up response headers
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename=BorrowingDataLastMonth.xlsx');
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=BorrowingDataLastMonth.xlsx',
+    );
 
     // Write the workbook to the response
     await workbook.xlsx.write(res);
 
     res.end();
-  }
+  },
 );
 
 /**
@@ -493,7 +560,6 @@ export const getAllBorrowingInTheLastMonthXLSX = expressAsyncHandler(
 export const getMyBorrowing = expressAsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { id } = req.user!;
-    
 
     const borrowing = await prisma.borrowing.findMany({
       where: {
@@ -505,12 +571,18 @@ export const getMyBorrowing = expressAsyncHandler(
     });
     if (!borrowing) {
       throw new NotFoundError([
-        { message: 'Borrowing Data For this User not found', type: MessageType.ERROR },
+        {
+          message: 'Borrowing Data For this User not found',
+          type: MessageType.ERROR,
+        },
       ]);
     }
     const response = new ApiResponse({
       messages: [
-        { message: 'Borrowing Data retrieved successfully', type: MessageType.SUCCESS },
+        {
+          message: 'Borrowing Data retrieved successfully',
+          type: MessageType.SUCCESS,
+        },
       ],
       data: borrowing,
     });
@@ -546,12 +618,18 @@ export const getMyBorrowingOverDueDate = expressAsyncHandler(
     });
     if (!borrowing) {
       throw new NotFoundError([
-        { message: 'Borrowing OverDue Date For this User not found', type: MessageType.ERROR },
+        {
+          message: 'Borrowing OverDue Date For this User not found',
+          type: MessageType.ERROR,
+        },
       ]);
     }
     const response = new ApiResponse({
       messages: [
-        { message: 'Borrowing OverDue Date retrieved successfully', type: MessageType.SUCCESS },
+        {
+          message: 'Borrowing OverDue Date retrieved successfully',
+          type: MessageType.SUCCESS,
+        },
       ],
       data: borrowing,
     });

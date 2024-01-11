@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import {
   checkOutBook,
   returnBook,
@@ -68,7 +69,7 @@ borrowingRouter
     getAllBorrowingInSpecificPeriodValidation,
     getAllBorrowingInSpecificPeriodXLSX,
   );
-  
+
 borrowingRouter
   .route('/lastMonth')
   .all(authMiddleware, allowedTo('ADMIN'))

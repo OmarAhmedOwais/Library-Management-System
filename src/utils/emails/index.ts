@@ -1,1 +1,1 @@
-export * from "./forget-password-email"
+export * from './forget-password-email';

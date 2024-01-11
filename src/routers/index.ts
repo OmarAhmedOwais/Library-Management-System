@@ -1,1 +1,1 @@
-export * from './mount.router'
+export * from './mount.router';

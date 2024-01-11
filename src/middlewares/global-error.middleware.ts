@@ -4,9 +4,9 @@ import { ApiError, InternalServerError } from '@/error';
 
 export const globalErrorMiddleware = (
   err: Error | ApiError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ) => {
   if ('statusCode' in err) {
     return res.status(err.statusCode).json(err);

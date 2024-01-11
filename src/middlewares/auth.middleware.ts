@@ -5,7 +5,7 @@ import { UnauthorizedError } from '@/error';
 import { prisma, verifyToken } from '@/utils';
 
 export const authMiddleware = expressAsyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, _res: Response, next: NextFunction) => {
     const token = <string | undefined>req.session?.token;
 
     if (!token) {

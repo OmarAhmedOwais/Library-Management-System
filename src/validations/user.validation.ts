@@ -1,8 +1,8 @@
-import { body, param,query } from 'express-validator';
+import { body, param, query } from 'express-validator';
+import { User, Prisma } from '@prisma/client';
 
 import { validationMiddleware } from '@/middlewares';
 
-import { User, Prisma } from '@prisma/client';
 const VALID_ORDERS = [Prisma.SortOrder.asc, Prisma.SortOrder.desc];
 const VALID_FIELDS: (keyof User)[] = [
   'name',
@@ -32,7 +32,7 @@ export const getAllUsersValidation = [
     .optional()
     .isString()
     .withMessage('Sort Must be String')
-    .custom((value: string, { req }) => {
+    .custom((value: string) => {
       if (value) {
         const sortArray = value.split(',');
         const isValid = sortArray.every((sortOption) => {
@@ -94,11 +94,11 @@ export const getUserValidation = [
     .withMessage('Id Must Be Integer'),
   validationMiddleware,
 ];
-export const deleteUserValidation=[
+export const deleteUserValidation = [
   param('id')
     .notEmpty()
     .withMessage('user id is required')
     .isInt()
     .withMessage('Id Must Be Integer'),
   validationMiddleware,
-]
+];

@@ -42,14 +42,15 @@ export class ApiResponse {
     this.statusCode = statusCode;
     this.status = ResponseStatus.SUCCESS;
     this.messages = messages;
-    pagination &&
-      (this.pagination = {
+    if (pagination) {
+      this.pagination = {
         pages: pagination.pages,
         page: pagination.page,
         length: pagination.length,
         limit: pagination.limit,
         total: pagination.total,
-      });
+      };
+    }
     this.data = data;
   }
 }

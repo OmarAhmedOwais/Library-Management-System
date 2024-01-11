@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-import { SendEmailInterface } from '../interfaces/sendEmail/SendEmail.interface';
+import { SendEmailInterface } from '@/types';
 
 export const sendEmail = async (data: SendEmailInterface): Promise<void> => {
   // 1) destruction Data

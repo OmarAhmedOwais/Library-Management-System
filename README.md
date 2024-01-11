@@ -5,7 +5,7 @@ To set up and run the application, follow these steps:
 1. **Clone the repository from GitHub:**
 
    ```
-   git clone https://github.com/OmarAhmedOwais/Library-Management-System.git
+   git clone <repository_url>
    ```
 
 2. **Navigate to the project directory:**
@@ -277,3 +277,15 @@ To set up and run the application, follow these steps:
 - **Expected Output:** None
 
 Please note that these endpoints and their expected inputs/outputs are subject to change based on the development progress and requirements.
+
+## Copyright 2024 oa147
+
+- Licensed under the Apache License, Version 2.0 (the "License");
+- you may not use this file except in compliance with the License.
+- You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0 
+
+- Unless required by applicable law or agreed to in writing, software
+- distributed under the License is distributed on an "AS IS" BASIS,
+- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- See the License for the specific language governing permissions and
+- limitations under the License.

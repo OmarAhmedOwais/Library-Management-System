@@ -11,6 +11,16 @@
     "plugin:import/typescript",
     "plugin:prettier/recommended"
   ],
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "./src"]
+        ],
+        "extensions": [".js", ".ts", ".json"]
+      }
+    }
+  },
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",

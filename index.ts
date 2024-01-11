@@ -8,7 +8,6 @@ dotenv.config();
 const PORT = process.env.PORT || 3001;
 const COOKIE_MAX_AGE = 2 * 24 * 60 * 60 * 1000; //  2 * 24 hours = 2 days
 
-
 import { globalErrorMiddleware, globalNotFoundMiddleware } from '@/middlewares';
 import { mountRouter } from '@/routers';
 //import { rateLimitMiddleware } from '@/middlewares';

@@ -1,8 +1,10 @@
 import { body, param, query } from 'express-validator';
-import { validationMiddleware } from '@/middlewares';
 import { Book, Prisma } from '@prisma/client';
-import { prisma } from '@/utils';
 import slugify from 'slugify';
+
+import { validationMiddleware } from '@/middlewares';
+import { prisma } from '@/utils';
+
 const VALID_ORDERS = [Prisma.SortOrder.asc, Prisma.SortOrder.desc];
 const VALID_FIELDS: (keyof Book)[] = [
   'ISBN',
@@ -37,7 +39,7 @@ export const getAllBooksValidation = [
     .optional()
     .isString()
     .withMessage('Sort Must be String')
-    .custom((value: string, { req }) => {
+    .custom((value: string) => {
       if (value) {
         const sortArray = value.split(',');
         const isValid = sortArray.every((sortOption) => {
@@ -65,7 +67,8 @@ export const createBookValidation = [
     .custom((value, { req }) => {
       req.body.slug = slugify(value);
       return true;
-    }).custom(async (value: string,{req}) => {
+    })
+    .custom(async (value: string, { req }) => {
       const book = await prisma.book.findUnique({
         where: {
           slug: req.body.slug,

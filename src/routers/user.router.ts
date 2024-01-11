@@ -23,7 +23,7 @@ const userRouter = Router();
 userRouter
   .route('/')
   .all(authMiddleware, allowedTo('ADMIN'))
-  .get(getAllUsersValidation,getAllUsers)
+  .get(getAllUsersValidation, getAllUsers)
   .post(createUserValidation, createUser);
 
 userRouter

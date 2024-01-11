@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import {
   createBook,
   getAllBooks,
@@ -6,7 +7,7 @@ import {
   deleteBook,
   updateBook,
 } from '@/controllers';
-import { authMiddleware ,allowedTo,rateLimitMiddleware} from '@/middlewares';
+import { authMiddleware, allowedTo, rateLimitMiddleware } from '@/middlewares';
 import {
   createBookValidation,
   deleteBookValidation,
@@ -19,14 +20,14 @@ const bookRouter = Router();
 
 bookRouter
   .route('/')
-  .get(getAllBooksValidation,rateLimitMiddleware, getAllBooks)
-  .all(authMiddleware,allowedTo("ADMIN"))
+  .get(getAllBooksValidation, rateLimitMiddleware, getAllBooks)
+  .all(authMiddleware, allowedTo('ADMIN'))
   .post(createBookValidation, createBook);
 
 bookRouter
   .route('/:id')
-  .get(getBookValidation,rateLimitMiddleware,getBook)
-  .all(authMiddleware,allowedTo("ADMIN"))
-  .put(updateBookValidation,updateBook)
-  .delete(deleteBookValidation,deleteBook);
+  .get(getBookValidation, rateLimitMiddleware, getBook)
+  .all(authMiddleware, allowedTo('ADMIN'))
+  .put(updateBookValidation, updateBook)
+  .delete(deleteBookValidation, deleteBook);
 export { bookRouter };

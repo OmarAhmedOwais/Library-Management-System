@@ -1,7 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 
-import { MessageType, ResponseStatus } from '@/types/enums';
 import { ApiError } from './api.error';
+
+import { MessageType, ResponseStatus } from '@/types/enums';
 
 export class InternalServerError extends ApiError {
   constructor(error: Error) {
