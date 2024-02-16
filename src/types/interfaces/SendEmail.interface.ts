@@ -3,5 +3,5 @@ export interface SendEmailInterface {
   to: [string];
   subject: string;
   text: string;
-  html: string;
+  html?: string;
 }
