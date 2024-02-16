@@ -1,5 +1,7 @@
 export interface SendEmailInterface {
-  email: string;
+  from:string;
+  to: [string];
   subject: string;
-  message: string;
+  text: string;
+  html: string;
 }
